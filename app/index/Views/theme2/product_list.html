@@ -1,0 +1,88 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$class_data.seo_title} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$class_data.seo_keywords}">
+<meta name="description" content="{$class_data.seo_description}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+
+        <h1 class="category-title">
+            {$class_data['title']}
+            <div class="more pull-right">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    {foreach name="$parent_class_datas" item="vo"}
+                    <li><a href="{:cms_class_url($vo)}">{$vo.title}</a></li>
+                    {/foreach}
+                </ol>
+            </div>
+        </h1>
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>列表</span>
+                            <div class="more">
+                                <ul class="list-unstyled list-inline category-order clearfix">
+                                    <li><a href="?" {if condition="input('orderby') eq ''"}class="active"{/if}>默认</a></li>
+                                    <li><a href="?orderby=view" {if condition="input('orderby') eq 'view'"}class="active"{/if}>浏览次数</a></li>
+                                    <li><a href="?orderby=time" {if condition="input('orderby') eq 'time'"}class="active"{/if}>最早发布</a></li>
+                                </ul>
+                            </div>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="product-list row">
+                            {foreach name="list" item="vo"}
+                            <div class="col-sm-4 col-md-3 col-xs-6 product-item">
+                                <div class="card">
+                                    <div class="thumb">
+                                        <a href="{$vo.url}" class="preview-link">
+                                            <div class="embed-responsive embed-responsive-square">
+                                                <img src="{$vo.image}" alt="{$vo.title}">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="title">
+                                        <h2><a href="{$vo.url}" title="{$vo.title}">{$vo.title}</a></h2>
+                                    </div>
+                                    <div class="operate">
+                                        <div class="pull-left text-red">
+                                            <div class="mt-1">
+                                                <span class="">
+                                                    <i class="fa fa-rmb" style="font-size: 11px"></i>
+                                                    {$vo.price}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="{$vo.url}" class="btn btn-primary btn-xs">详情</a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/foreach}·</div>
+
+                        <div class="text-center pager">
+                            {$list|raw}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{/block}
+
+{block name="js"}
+
+{/block}

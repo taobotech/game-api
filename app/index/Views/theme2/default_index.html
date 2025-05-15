@@ -1,0 +1,64 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$class_data.seo_title} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$class_data.seo_keywords}">
+<meta name="description" content="{$class_data.seo_description}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+        <h1 class="category-title">
+            {$class_data['title']}
+            <div class="more pull-right">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    {foreach name="$parent_class_datas" item="vo"}
+                    <li><a href="{:cms_class_url($vo)}">{$vo.title}</a></li>
+                    {/foreach}
+                </ol>
+            </div>
+        </h1>
+
+        <div class="row">
+            <main class="col-xs-12 col-md-9">
+                {foreach name="clist" item="vo"}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>{$vo.title}</span>
+                            <a href="{:cms_class_url($vo)}" class="more">>>更多</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body py-0">
+                        <ul class="list-default">
+                            {foreach name=":cms_list($vo.id,10)" item="v"}
+                            <li>
+                                <a href="{$v.url}">{$v.title}</a>
+                                <span class="pull-right">{$v.create_time|date='Y-m-d'}</span>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                </div>
+                {/foreach}
+            </main>
+
+            <aside class="col-xs-12 col-md-3">
+                {include file="theme1/common/aside_nav" /}
+                <!--广告图片1-->
+                {include file="theme1/common/aside_ad1" /}
+                <!--推荐资讯-->
+                {include file="theme1/common/aside_article" /}
+                <!--广告图片2-->
+                {include file="theme1/common/aside_ad2" /}
+            </aside>
+        </div>
+    </div>
+</main>
+{/block}
+
+{block name="js"}
+
+{/block}

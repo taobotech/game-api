@@ -1,0 +1,28 @@
+<!--副导航-->
+{if condition="$model_class_datas"}
+<div class="panel panel-default ">
+    <div class="panel-heading">
+        <h3 class="panel-title">{$parent_class_datas[0]['title']}</h3>
+    </div>
+    <div class="panel-body">
+        <div class="aside-nav">
+            <ul class="">
+                {foreach name="model_class_datas" item="vo"}
+                <li>
+                    <a  {eq name="$vo.id" value="$class_data.id"}class="active"{/eq} href="{:cms_class_url($vo)}" title="{$vo.title}">{$vo.title}</a>
+                    {if condition="$vo._data"}
+                    <ul>
+                        {foreach name="$vo._data" item="vo2"}
+                        <li>
+                            <a {eq name="$vo2.id" value="$class_data.id"}class="active"{/eq} href="{:cms_class_url($vo2)}" title="{$vo2.title}">{$vo2.title}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {/if}
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>
+{/if}

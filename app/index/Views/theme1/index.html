@@ -1,0 +1,165 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+    <title>{~echo xn_cfg('base.title')}</title>
+    <meta name="keywords" content="{~echo xn_cfg('base.keywords')}">
+    <meta name="description" content="{~echo xn_cfg('base.description')}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+        <div class="row">
+            <main class="col-xs-12 col-md-9">
+                <div class="swiper-container index-banner">
+                    <div class="swiper-wrapper">
+                        {foreach name=":cms_get_banner('index')" item="vo"}
+                        <div class="swiper-slide" style="background-image: url({$vo.image});background-size: cover;">
+                            <div class="swiper-title">
+                                <span>{$vo.title}</span>
+                            </div>
+                        </div>
+                        {/foreach}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+                <div class="panel panel-default index-gallary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>产品推荐</span>
+                            <div class="more">
+                                <a href="{:url('cms/index',['cid'=>2])}">查看更多</a>
+                            </div>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="related-article">
+                            <div class="row">
+                                {foreach name=":cms_list(2,4)" item="vo"}
+                                <div class="col-sm-3 col-xs-6">
+                                    <a href="{$vo.url}" class="img-zoom">
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <img src="{$vo.image}" alt="{$vo.title}" class="embed-responsive-item">
+                                        </div>
+                                    </a>
+                                    <h5><a href="{$vo.url}">{$vo.title}</a></h5>
+                                </div>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>最近更新</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body p-0">
+                        <div class="article-list">
+                            {foreach name=":cms_list(3,20,'','id,cid,title,image,is_hot,view,create_time,update_time,content')" item="vo"}
+                            <article class="article-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{$vo.url}">
+                                            <div class="embed-responsive embed-responsive-4by3 img-zoom">
+                                                <img src="{$vo.image}" alt="{$vo.title}">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="article-title">
+                                            <a href="{$vo.url}">{$vo.title}</a>
+                                        </h3>
+                                        <div class="article-intro">
+                                            {$vo.content|cms_substr=300}
+                                        </div>
+                                        <div class="article-tag">
+                                            <a href="{:cms_class_url($vo.class)}" class="tag tag-primary">{$vo.class.title}</a>
+                                            <span itemprop="date">{$vo.create_time}</span>
+                                            <span class="hidden-xs" itemprop="views" title="浏览次数">
+                                                <i class="fa fa-eye"></i> {$vo.view} 浏览
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            {/foreach}
+                        </div>
+
+                        <div class="text-center clearfix">
+                            <a class="btn btn-default" style="margin: 10px 0" href="{:url('cms/index',['cid'=>2])}">查看更多</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="col-xs-12 col-md-3">
+                <!--推荐商品-->
+                {include file="theme1/common/aside_product" /}
+                <!--广告图片1-->
+                {include file="theme1/common/aside_ad1" /}
+                <!--推荐资讯-->
+                {include file="theme1/common/aside_article" /}
+                <!--广告图片2-->
+                {include file="theme1/common/aside_ad2" /}
+
+                <!--友情链接-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">友情链接</h3>
+                    </div>
+                    <div class="panel-body">
+                        <!--图片链接-->
+                        <div class="friend-links-logo">
+                            {foreach name=":cms_list2('links')" item="vo"}
+                                {if condition="!empty($vo.image)"}
+                                <div class="item">
+                                    <a href='{$vo.link}' target='_blank'>
+                                        <img src="{$vo.image}" alt="{$vo.title}">
+                                    </a>
+                                </div>
+                                {/if}
+                            {/foreach}
+                        </div>
+
+                        <!--文字链接-->
+                        <div class="friend-links-text">
+                            {foreach name=":cms_list2('links')" item="vo"}
+                                {if condition="empty($vo.image)"}
+                                <div class="item">
+                                    <a href='{$vo.link}' target='_blank'>{$vo.title}</a>
+                                </div>
+                                {/if}
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+</main>
+{/block}
+
+{block name="js"}
+<script>
+    var swiper = new Swiper('.index-banner', {
+
+        setWrapperSize :true,
+        autoplay: true,
+        navigation: {
+            prevEl: '.index-banner .swiper-button-prev',
+            nextEl: '.index-banner .swiper-button-next'
+        },
+        pagination: {
+            el: '.index-banner .swiper-pagination',
+            clickable: true
+        },
+        paginationType: 'fraction',
+    });
+    //swiper.el.style.height = '100px';
+</script>
+{/block}

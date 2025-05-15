@@ -1,0 +1,94 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$class_data.seo_title} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$class_data.keywords}">
+<meta name="description" content="{$class_data.keywords}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+        <h1 class="category-title">
+            {$class_data['title']}
+            <div class="more pull-right">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    {foreach name="$parent_class_datas" item="vo"}
+                    <li><a href="{:cms_class_url($vo)}">{$vo.title}</a></li>
+                    {/foreach}
+                </ol>
+            </div>
+        </h1>
+
+        <div class="row">
+            <main class="col-xs-12 col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>列表</span>
+                            <div class="more">
+                                <ul class="list-unstyled list-inline category-order clearfix">
+                                    <li><a href="?" {if condition="input('orderby') eq ''"}class="active"{/if}>默认</a></li>
+                                    <li><a href="?orderby=view" {if condition="input('orderby') eq 'view'"}class="active"{/if}>浏览次数</a></li>
+                                    <li><a href="?orderby=time" {if condition="input('orderby') eq 'time'"}class="active"{/if}>最早发布</a></li>
+                                </ul>
+                            </div>
+                        </h3>
+                    </div>
+                    <div class="panel-body py-0">
+                        <div class="article-list">
+                            {foreach name="list" item="vo"}
+                            <article class="article-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{$vo.url}">
+                                            <div class="embed-responsive embed-responsive-4by3 img-zoom">
+                                                <img src="{$vo.image}" alt="{$vo.title}">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="article-title">
+                                            <a href="{$vo.url}">{$vo.title}</a>
+                                        </h3>
+                                        <div class="article-intro">
+                                            {$vo.content|cms_substr=300}
+                                        </div>
+                                        <div class="article-tag">
+                                            <a href="{:cms_class_url($vo.class)}" class="tag tag-primary">{$vo.class.title}</a>
+                                            <span itemprop="date">{$vo.create_time}</span>
+                                            <span class="hidden-xs" itemprop="views" title="浏览次数">
+                                                <i class="fa fa-eye"></i> {$vo.view} 浏览
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            {/foreach}
+                        </div>
+
+                        <div class="text-center pager">
+                            {$list|raw}
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="col-xs-12 col-md-3">
+                {include file="theme1/common/aside_nav" /}
+                <!--广告图片1-->
+                {include file="theme1/common/aside_ad1" /}
+                <!--推荐资讯-->
+                {include file="theme1/common/aside_article" /}
+                <!--广告图片2-->
+                {include file="theme1/common/aside_ad2" /}
+            </aside>
+        </div>
+    </div>
+</main>
+{/block}
+
+{block name="js"}
+
+{/block}

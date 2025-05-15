@@ -1,0 +1,54 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$keyword} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$keyword}">
+<meta name="description" content="{$keyword}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+        <h1 class="category-title">
+            搜索:<span>{$keyword}</span>
+        </h1>
+
+        <div class="row">
+            <main class="col-xs-12 col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span>搜索结果</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body py-0">
+                        <ul class="list-default">
+                            {foreach name="list" item="vo"}
+                            <li>
+                                [<a href="{:cms_class_url($vo.class)}"  target="_blank">{$vo.class.title}</a>]
+                                <a href="{$vo.url}" target="_blank">{$vo.title}</a>
+                                <span class="pull-right">{$vo.create_time|date='Y-m-d'}</span>
+                            </li>
+                            {/foreach}
+                        </ul>
+                        <div class="text-center pager">
+                            {$list|raw}
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="col-xs-12 col-md-3">
+                <!--广告图片1-->
+                {include file="theme1/common/aside_ad1" /}
+                <!--推荐资讯-->
+                {include file="theme1/common/aside_article" /}
+            </aside>
+        </div>
+    </div>
+</main>
+{/block}
+
+{block name="js"}
+
+{/block}

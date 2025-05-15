@@ -1,0 +1,28 @@
+<div class="panel panel-default ">
+    <div class="panel-heading">
+        <h3 class="panel-title">推荐商品</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="media-list">
+            {foreach name=":cms_list(2,6,'','*','is_hot desc,id desc')" item="vo"}
+            <li class="media">
+                <div class="media-left">
+                    <a href="{$vo.url}">
+                        <img class="media-object" style="width: 80px;height: 60px" src="{$vo.image}" alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <div class="con">
+                        <div class="media-title">
+                            <a href="{$vo.url}">{$vo.title}</a>
+                        </div>
+                        <div class="media-price">
+                            ￥{$vo.price}
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>

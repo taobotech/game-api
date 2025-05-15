@@ -1,0 +1,166 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$data.seo_title} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$data.seo_keywords}">
+<meta name="description" content="{$data.seo_description}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+
+        <h1 class="category-title">
+            {$class_data['title']}
+            <div class="more pull-right">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    {foreach name="$parent_class_datas" item="vo"}
+                    <li><a href="{:cms_class_url($vo)}">{$vo.title}</a></li>
+                    {/foreach}
+                </ol>
+            </div>
+        </h1>
+
+        <div class="row">
+            <div class="col-lg-9 col-sm-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-5 col-sm-12">
+                                <div class="pc-slide">
+                                    <div class="view">
+                                        <div class="swiper-container swiper-container-horizontal swiper-container-initialized">
+                                            <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                                                {foreach name="data.images" item="vo"}
+                                                <div class="swiper-slide img-center" style="width: 400px;">
+                                                    <div class="imgauto"> <img src="{$vo}" rel="{$vo}" class="jqzoom" alt=""> </div>
+                                                </div>
+                                                {/foreach}
+                                            </div>
+                                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                                    </div>
+                                    <div class="preview"> <a class="arrow-left" href="javascript:;"></a> <a class="arrow-right" href="javascript:;"></a>
+                                        <div class="swiper-container swiper-container-horizontal swiper-container-initialized">
+                                            <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                                                {foreach name="data.images" item="vo"}
+                                                <div class="swiper-slide" style="width: 110px; margin-right: 5px;">
+                                                    <div class="img-center"><img src="{$vo}"></div>
+                                                </div>
+                                                {/foreach}
+                                            </div>
+                                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-sm-12">
+                                <div class="product-info">
+                                    <div>
+                                        <h2>{$data.title}</h2>
+                                        <div class="price-box">
+                                            <span>售价</span>
+                                            <span class="c price">￥{$data.price}</span>
+                                        </div>
+                                        <div class="info-list">
+                                            <div class="item">
+                                                <span class="t">参数1</span>
+                                                <span class="c">{$data.param1}</span>
+                                            </div>
+                                            <div class="item">
+                                                <span class="t">参数2</span>
+                                                <span class="c">{$data.param2}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action">
+                                        <button type="button" class="btn btn-primary btn-lg" onclick="message('{$data.title}')">咨询产品</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="product-detail">
+                                    <ul class="nav nav-tabs">
+                                        <li role="presentation" class="active"><a href="javascript:void()"><b>产品详情</b></a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        {$data.content|raw}
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-12 hidden-xs">
+                <!--推荐资讯-->
+                {include file="theme1/common/aside_product" /}
+                <!--广告图片2-->
+                {include file="theme1/common/aside_ad2" /}
+            </div>
+        </div>
+    </div>
+</main>
+
+{/block}
+
+{block name="js"}
+
+<script src="{$static}js/jquery.imagezoom.min.js"></script>
+<script>
+    if ($(window).width() > 767) {
+        $('.jqzoom').imagezoom();
+    }
+
+    $('.preview .swiper-slide').eq(0).addClass('active-nav');
+
+    var viewSwiper = new Swiper('.view .swiper-container', {
+        on: {
+            slideChangeTransitionStart: function() {
+                updateNavPosition()
+            }
+        }
+    });
+    $('.view .arrow-left,.preview .arrow-left').on('click', function(e) {
+        e.preventDefault();
+        if (viewSwiper.activeIndex === 0) {
+            viewSwiper.slideTo(viewSwiper.slides.length - 1, 1000);
+            return
+        }
+        viewSwiper.slidePrev();
+    });
+    $('.view .arrow-right,.preview .arrow-right').on('click', function(e) {
+        e.preventDefault();
+        if (viewSwiper.activeIndex === viewSwiper.slides.length - 1) {
+            viewSwiper.slideTo(0, 1000);
+            return
+        }
+        viewSwiper.slideNext();
+    });
+    var previewSwiper = new Swiper('.preview .swiper-container', {
+        //visibilityFullFit: true,
+        slidesPerView: 3,
+        allowTouchMove: false,
+        spaceBetween: 5,
+        on: {
+            tap: function() {
+                viewSwiper.slideTo(previewSwiper.clickedIndex)
+            }
+        }
+    });
+    function updateNavPosition() {
+        $('.preview .active-nav').removeClass('active-nav');
+        var activeNav = $('.preview .swiper-slide').eq(viewSwiper.activeIndex).addClass('active-nav');
+        if (!activeNav.hasClass('swiper-slide-visible')) {
+            if (activeNav.index() > previewSwiper.activeIndex) {
+                var thumbsPerNav = Math.floor(previewSwiper.width / activeNav.width()) - 1;
+                previewSwiper.slideTo(activeNav.index() - thumbsPerNav);
+            } else {
+                previewSwiper.slideTo(activeNav.index());
+            }
+        }
+    }
+</script>
+{/block}

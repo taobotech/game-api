@@ -1,0 +1,75 @@
+{extend name="$main_path" /}
+
+{block name="title_seo"}
+<title>{$class_data.seo_title} - {~echo xn_cfg('base.sys_name')}</title>
+<meta name="keywords" content="{$class_data.keywords}">
+<meta name="description" content="{$class_data.keywords}">
+{/block}
+
+{block name="body"}
+<main class="main-content">
+    <div class="container" id="content-container">
+        <h1 class="category-title">
+            {$class_data['title']}
+            <div class="more pull-right">
+                <ol class="breadcrumb">
+                    <li><a href="/">首页</a></li>
+                    {foreach name="$parent_class_datas" item="vo"}
+                    <li><a href="{:cms_class_url($vo)}">{$vo.title}</a></li>
+                    {/foreach}
+                </ol>
+            </div>
+        </h1>
+
+        <div class="row">
+            <main class="col-xs-12 col-md-12">
+                <div class="panel">
+                    {if condition="!empty($model_class_datas)"}
+                    <div class="subnav">
+                        <ul>
+                            {foreach name="model_class_datas" item="vo"}
+                            <li {eq name="$vo.id" value="$class_data.id"}class="active"{/eq}>
+                            <a href="{$vo.url}">{$vo.title}</a>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    {else/}
+                    <div class="subnav">
+                        <ul>
+                            <li class="active">
+                                <a href="article_list.html">{$class_data.title}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {/if}
+                    <div class="panel-body">
+                        <div class="page-content">
+                            {$data.content|raw}
+
+                            <div class="xn-message" style="margin:inherit">
+                                <form class="form-message">
+                                    <label><span>留言标题：</span><input type="text" name="title" class="inp" value=""></label>
+                                    <label><span>你的姓名：</span><input type="text" name="username" class="inp" value=""></label>
+                                    <label><span>联系电话：</span><input type="text" name="tel" class="inp" value=""></label>
+                                    <label><span>电子邮箱：</span><input type="text" name="email" class="inp" value=""></label>
+                                    <label class="mes"><span>留言内容：</span><textarea name="msg"></textarea></label>
+                                    <div class="msgbtn-box">
+                                        <input type="button" name="submit" onclick="submitMessage()" value="提 交">
+                                        <input type="reset" name="reset" value="重 置">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+</main>
+{/block}
+
+{block name="js"}
+
+{/block}
