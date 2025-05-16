@@ -14,6 +14,7 @@ use App\Models\BoxLogInstallModel;
 use App\Models\BoxLogUninstallModel;
 use App\Models\BoxLogActiveModel;
 use App\Models\GameModel;
+use Illuminate\Support\Facades\Config;
 
 class IndexController extends BaseController
 {
@@ -23,6 +24,7 @@ class IndexController extends BaseController
     protected $box_log_install_model;
     protected $box_log_uninstall_model;
     protected $box_log_active_model;
+    protected $gameHost;
 
     public function __construct()
     {
@@ -32,6 +34,7 @@ class IndexController extends BaseController
         $this->box_log_install_model = new BoxLogInstallModel();
         $this->box_log_uninstall_model = new BoxLogUninstallModel();
         $this->box_log_active_model = new BoxLogActiveModel();
+        $this->gameHost = env('GAME_HOST', 'http://111.22.161.226:18080');
     }
 
     public function index(Request $request)
@@ -47,8 +50,8 @@ class IndexController extends BaseController
                 $game_list = $gameModel->whereIn('id', $gameids)->select('id', 'flag', 'category', 'title', 'game_logo', 'game_url')->get()->toArray();
                 foreach ($game_list as &$game) {
                     $game['category'] = explode(',', $game['category']);
-                    $game['game_url'] = "http://111.22.161.226:18080" . $game['game_url'];
-                    $game['game_logo'] = "http://111.22.161.226:18080" . $game['game_logo'];
+                    $game['game_url'] = $this->gameHost . $game['game_url'];
+                    $game['game_logo'] = $this->gameHost . $game['game_logo'];
                 }
                 $box_home['game_list'] = $game_list;
             }
@@ -63,7 +66,7 @@ class IndexController extends BaseController
         $categoryModel = new BoxCategoryModel();
         $game_list = $categoryModel->where('box_id', $id)->get()->toArray();
         foreach ($game_list as &$game) {
-            $game['icon'] = "http://111.22.161.226:18080" . $game['icon'];
+            $game['icon'] = $this->gameHost . $game['icon'];
         }
         return response()->json(['code' => 0, 'msg' => '', 'data' => $game_list]);
     }
@@ -81,8 +84,8 @@ class IndexController extends BaseController
         }
         foreach ($game_list as &$game) {
             $game['category'] = explode(',', $game['category']);
-            $game['game_url'] = "http://111.22.161.226:18080" . $game['game_url'];
-            $game['game_logo'] = "http://111.22.161.226:18080" . $game['game_logo'];
+            $game['game_url'] = $this->gameHost . $game['game_url'];
+            $game['game_logo'] = $this->gameHost . $game['game_logo'];
         }
         return response()->json(['code' => 0, 'msg' => '', 'data' => $game_list]);
     }
@@ -101,8 +104,8 @@ class IndexController extends BaseController
         $game_list = $query->select('id', 'flag', 'category', 'title', 'game_logo', 'game_url')->get()->toArray();
         foreach ($game_list as &$game) {
             $game['category'] = explode(',', $game['category']);
-            $game['game_url'] = "http://111.22.161.226:18080" . $game['game_url'];
-            $game['game_logo'] = "http://111.22.161.226:18080" . $game['game_logo'];
+            $game['game_url'] = $this->gameHost . $game['game_url'];
+            $game['game_logo'] = $this->gameHost . $game['game_logo'];
         }
         return response()->json(['code' => 0, 'msg' => '', 'data' => $game_list]);
     }
